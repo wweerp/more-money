@@ -4,7 +4,8 @@
             <button @click="create">新增标签</button>
         </div>
         <ul class="current">
-            <li v-for="tag in dataSource" :key="tag" :class="{selected: selectedTags.indexOf(tag)>=0}" @click="toggleTag(tag)">{{tag}}</li>
+            <li v-for="tag in dataSource" :key="tag" :class="{selected: selectedTags.indexOf(tag)>=0}"
+                @click="toggleTag(tag)">{{tag}}</li>
         </ul>
     </div>
 </template>
@@ -15,7 +16,7 @@
 
     @Component
     export default class Tags extends Vue {
-        @Prop() dataSource:string[] | undefined;
+        @Prop() readonly  dataSource:string[]|undefined;
         selectedTags : string[] = [];
 
         toggleTag(tag:string){
@@ -25,6 +26,7 @@
             }else{
                 this.selectedTags.push(tag);
             }
+            this.$emit('update:value',this.selectedTags)
         }
 
         create(){
@@ -32,7 +34,7 @@
             if (name === '') {
                 window.alert('标签名不能为空');
             } else {
-                this.$emit('update:dataSource', [...this.dataSource, name]);
+                this.$emit('update:dataSource', [...this.dataSource!, name]);
             }
         }
     }

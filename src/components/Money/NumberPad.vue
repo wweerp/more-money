@@ -13,7 +13,7 @@
             <button @click="inputContext">7</button>
             <button @click="inputContext">8</button>
             <button @click="inputContext">9</button>
-            <button class="ok" >OK</button>
+            <button class="ok" @click="ok">OK</button>
             <button class="zero" @click="inputContext">0</button>
             <button @click="inputContext">.</button>
         </div>
@@ -29,7 +29,7 @@
         output = '0';
         inputContext(event:MouseEvent) {
             const button = (event.target as HTMLButtonElement);
-            const input = button.textContent;
+            const input = button.textContent!;
             if (this.output.length === 16) {return;}
             if(this.output === '0'){
                 if('0123456789'.indexOf(input)>=0){
@@ -53,6 +53,12 @@
         }
         clearNumber(){
             this.output = '0';
+        }
+
+        ok(){
+          this.$emit('update:value',this.output);
+          this.$emit('submit',this.output);
+          this.output = '0';
         }
 
     }
