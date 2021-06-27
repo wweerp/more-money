@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    {{ recordList }}
     <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
     <Types @update:value="onUpdateType"/>
     <Notes @update:value="onUpdateNotes"/>
@@ -15,21 +14,15 @@ import Types from '@/components/Money/Types.vue';
 import NumberPad from '@/components/Money/NumberPad.vue';
 import Vue from 'vue';
 import {Component, Watch} from 'vue-property-decorator';
+import recordListModel from '@/models/recordListModel';
 
-const recordList: Record[] = JSON.parse(window.localStorage.getItem('recordlist') || '[]');
-type Record = {
-  tags: string[];
-  notes: string;
-  type: string;
-  amount: number; // 数据类型 object | string
-  createTime?: Date; // 类或构造函数  ？表示这个属性的值可以不存在
-}
+const recordList = recordListModel.fetch();
 
 @Component({components: {Tags, Notes, Types, NumberPad}})
 export default class Money extends Vue {
   tags = ['衣', '食', '住', '行'];
-  recordList: Record[] = recordList;
-  record: Record = {
+  recordList: RecordItem[] = recordList;
+  record: RecordItem = {
     tags: [],
     notes: '',
     type: '-',
@@ -53,14 +46,14 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    const record2: Record = JSON.parse(JSON.stringify(this.record)); //深拷贝一个record
+    const record2: RecordItem = recordListModel.clone(this.record); //深拷贝一个record
     record2.createTime = new Date();
     this.recordList.push(record2);
   }
 
   @Watch('recordList')
   onRecordListChange() {
-    window.localStorage.setItem('recordlist', JSON.stringify(this.recordList));
+    recordListModel.save(this.recordList);
   }
 }
 </script>
