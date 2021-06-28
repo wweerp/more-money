@@ -27,7 +27,9 @@ export default class Labels extends Vue {
     const name = window.prompt('请输出标签名');
     if (name === '') {
       window.alert('标签名为空');
-    } else if(this.tags.indexOf(name)>=0){
+    } else if(name == null){
+      return;
+    }else if(this.tags.indexOf(name)>=0){
       window.alert('标签名重复');
     }else{
       this.tags.push(name);
