@@ -21,28 +21,19 @@
 
     @Component
     export default class Labels extends Vue {
-        tags: TagItem[] = tagList;
-        tag: TagItem = {id:'',name:''};
+      tags = tagListModel.data;
 
-        createTag() {
-            const name = window.prompt('请输出标签名');
-            //判断输入的标签名是否重复
-            const tagNow = this.tags.filter(t => t.id === name)[0];
-            if (name === '') {
-                window.alert('输入的标签名不能为空');
-            } else if (name == null) {
-                return;
-            } else if(tagNow){
-                window.alert('输入的标签名重复');
-            }else{
-                this.tag.id = name;
-                this.tag.name = name;
-                this.tag.createTime = new Date();
-                const tag2: TagItem = tagListModel.clone(this.tag); //深拷贝一个tag
-                this.tags.push(tag2);
-                tagListModel.save(this.tags);
-            }
+      createTag() {
+        const name = window.prompt('请输出标签名');
+        if (name) {
+          const message = tagListModel.create(name);
+          if (message === 'duplicated') {
+            window.alert('标签名重复了');
+          } else if (message === 'success') {
+            window.alert('添加成功');
+          }
         }
+      }
     }
 </script>
 
