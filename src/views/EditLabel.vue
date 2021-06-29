@@ -1,31 +1,33 @@
 <template>
-    <layout>
-        <Icon name="left"/>
-       <span>编辑标签</span>
-    </layout>
+  <layout>
+    <Icon name="left"/>
+    <span>编辑标签</span>
+    <Notes field-name="标签名" placeholder="在这里输入标签名"/>
+  </layout>
 </template>
 
 <script lang="ts">
-    import Vue from 'vue'
-    import {Component} from 'vue-property-decorator';
-    import tagListModel from "../models/tagListModel";
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+import tagListModel from '../models/tagListModel';
+import Notes from '@/components/Money/Notes.vue';
+@Component({
+  components: {Notes}
+})
+export default class EditLabel extends Vue {
+  created() {
+    const id = this.$route.params.id;
+    const tags = tagListModel.fetch();
+    const tag = tags.filter(t => t.id === id)[0];
+    if (tag) {
 
-
-    @Component
-    export default class EditLabel extends Vue {
-      created(){
-          const id = this.$route.params.id;
-          const tags = tagListModel.fetch();
-          const tag = tags.filter(t => t.id === id)[0];
-          if(tag){
-
-              console.log(tag)
-          }else{
-              this.$router.replace('/404')
-          }
-      }
-
+      console.log(tag);
+    } else {
+      this.$router.replace('/404');
     }
+  }
+
+}
 </script>
 
 <style lang="scss" scoped>
