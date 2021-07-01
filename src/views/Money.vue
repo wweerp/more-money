@@ -22,12 +22,7 @@
     export default class Money extends Vue {
         recordList = store.recordList;
         tags = store.fetchTags();
-        record: RecordItem = {
-            tags: [],
-            notes: '',
-            type: '-',
-            amount: 0
-        };
+        record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
 
         onUpdateTags(value: string[]) {
             this.record.tags = value;
