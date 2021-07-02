@@ -6,7 +6,7 @@
             <span class="rightIcon"></span>
         </div>
         <div class="form-wrapper">
-            <Notes :value="tag.name" @update:value="update" field-name="标签名" placeholder="在这里输入标签名"/>
+            <Notes :value="currentTag.name" @update:value="update" field-name="标签名" placeholder="在这里输入标签名"/>
         </div>
         <div class="deleteTag-wrapper">
             <button class="deleteTag" @click="remove">删除标签</button>
@@ -18,30 +18,33 @@
     import Vue from 'vue';
     import {Component} from 'vue-property-decorator';
     import Notes from '@/components/Money/Notes.vue';
-    import store from "../store/index2";
 
     @Component({
         components: {Notes}
     })
     export default class EditLabel extends Vue {
-        tag: Tag = undefined;
+        get currentTag() {
+            return this.$store.state.currentTag;
+        }
 
         created() {
-            this.tag = store.findTag(this.$route.params.id);
-            if (!this.tag){
+            this.$store.commit('fetchTags');
+            const id = this.$route.params.id;
+            this.$store.commit('setCurrentTag', id);
+            if (!this.currentTag){
                 this.$router.replace('/404');
             }
         }
 
-        update(name) {
-            if (this.tag) {
-               store.updateTag(this.tag.id,name);
+        update(name:string) {
+            if (this.currentTag) {
+               this.$store.commit('updateTag',{id:this.currentTag.id,name:name});
             }
         }
 
         remove() {
-            if(this.tag){
-                store.removeTag(this.tag.id);
+            if(this.currentTag){
+                this.$store.commit('removeTag',this.currentTag.id);
                 this.$router.back();
             }else{
                 alert("删除失败")

@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <div class="tags">
-            <router-link class="tag" v-for="tag in tags" :key="tag.id" :to="`/labels/edit/${tag.id}`">
+            <router-link class="tag" v-for="tag in tagList" :key="tag.id" :to="`/labels/edit/${tag.id}`">
                 <span>{{ tag.name }}</span>
                 <Icon name="right"/>
             </router-link>
@@ -15,22 +15,27 @@
 <script lang="ts">
     import Vue from 'vue';
     import {Component} from 'vue-property-decorator';
-    import store from "../store/index2";
 
     @Component
     export default class Labels extends Vue {
-      tags = store.fetchTags();
+        get tagList() {
+            return this.$store.state.tagList;
+        }
 
-      createTag() {
-          const name = window.prompt('请输入标签名');
-          if (name === '') {
-              window.alert('标签名不能为空');
-          } else if(!name){
-              return
-          }else{
-              store.createTag(name);
-          }
-      }
+        created() {
+            this.$store.commit('fetchTags')
+        }
+
+        createTag() {
+            const name = window.prompt('请输入标签名');
+            if (name === '') {
+                window.alert('标签名不能为空');
+            } else if (!name) {
+                return
+            } else {
+                this.$store.commit('createTag', name);
+            }
+        }
     }
 </script>
 
