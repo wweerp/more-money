@@ -13,9 +13,9 @@ import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Notes extends Vue {
-  @Prop({default:''}) readonly  value : string;
-  @Prop({required:true}) fieldName : string
-  @Prop() placeholder:string
+  @Prop({default:''}) readonly  value! : string;
+  @Prop({required:true}) fieldName !: string
+  @Prop() placeholder?:string
 
   onNotesChanged(value: string) {
     this.$emit('update:value', value);

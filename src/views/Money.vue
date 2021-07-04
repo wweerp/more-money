@@ -1,7 +1,7 @@
 <template>
     <Layout class-prefix="layout">
         <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
-        <Types @update:value="onUpdateType"/>
+        <Types :value.sync="record.type" />
         <Notes field-name="备注" placeholder="在这里输入备注" @update:value="onUpdateNotes"/>
         <Tags @update:value="onUpdateTags"/>
     </Layout>
@@ -24,15 +24,11 @@
         }
         record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
 
-        onUpdateTags(value:String[]){
+        onUpdateTags(value:string[]){
             this.record.tags = value;
         }
         onUpdateNotes(value: string) {
             this.record.notes = value;
-        }
-
-        onUpdateType(value: string) {
-            this.record.type = value;
         }
 
         onUpdateAmount(value: string) {
