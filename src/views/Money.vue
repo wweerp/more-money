@@ -1,7 +1,7 @@
 <template>
     <Layout class-prefix="layout">
         <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
-        <Types :value.sync="record.type" />
+        <Types :value.sync="record.type" :data-source="RTList"/>
         <Notes field-name="备注" placeholder="在这里输入备注" @update:value="onUpdateNotes"/>
         <Tags @update:value="onUpdateTags"/>
     </Layout>
@@ -14,6 +14,7 @@
     import NumberPad from '@/components/Money/NumberPad.vue';
     import Vue from 'vue';
     import {Component} from 'vue-property-decorator';
+    import recordTypeList from '@/constants/recordTypeList';
 
 
 
@@ -23,6 +24,8 @@
             return this.$store.state.recordList;
         }
         record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
+
+        RTList = recordTypeList;
 
         onUpdateTags(value:string[]){
             this.record.tags = value;

@@ -11,17 +11,9 @@ type Tag = {
     name: string;
 }
 
-type TagItem = {
-    id: string;
-    name: string;
-    createTime?: Date;
+type RootState = {
+    recordList: RecordItem[],
+    tagList: Tag[],
+    currentTag?: Tag
 }
 
-type TagListModel = {
-    data: Tag[]
-    fetch: () => Tag[]
-    create: (name: string) => 'success' | 'duplicated' // 联合类型
-    update: (id: string, name: string) => 'success' | 'not found' | 'duplicated'
-    remove: (id: string) => boolean
-    save: () => void
-}
